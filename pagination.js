@@ -62,6 +62,7 @@ const loadDataIntoTable = (data) => {
 }
 
 //handle number click...
+let clickedLink;
 
 function handleNumberClick(clickedLink, leftArrow, rightArrow) {
 
@@ -69,23 +70,30 @@ function handleNumberClick(clickedLink, leftArrow, rightArrow) {
 
     let clickedLinkPageNumber = parseInt(clickedLink.innerText);
 
+
     const url = getUrl((clickedLinkPageNumber * 10) - 10);
     getData(url);
 
     switch (clickedLinkPageNumber) {
         case 1:
-            disableleftArrow();
+            disableleftArrow(leftArrow);
             if (rightArrow.className.indexOf('disabled') !== -1) {
-                enableleftArrow();
+                enablerightArrow(rightArrow);
             }
             break;
         case 10:
-            disablerightArrow();
+            disablerightArrow(rightArrow);
             if (leftArrow.className.indexOf('disabled') !== -1) {
-                enableleftArrow();
+                enableleftArrow(leftArrow);
             }
             break;
         default:
+            if (leftArrow.className.indexOf('disabled') !== -1) {
+                enableleftArrow(leftArrow);
+            }
+            if (rightArrow.className.indexOf('disabled') !== -1) {
+                enablerightArrow(rightArrow)
+            }
             break;
     }
 }
@@ -96,13 +104,15 @@ const handleleftArrowClick = () => {
 
 }
 
-const disableleftArrow = () => {
-
+const disableleftArrow = (leftArrow) => {
+    leftArrow.classList = 'disabled arrow-left';
+    leftArrow.classList.remove('waves-effect')
 }
 
 
-const enableleftArrow = () => {
-
+const enableleftArrow = (leftArrow) => {
+    leftArrow.classList.remove('disabled');
+    leftArrow.classList = 'waves-effect arrow-left';
 }
 
 
@@ -112,13 +122,15 @@ const handlerightArrowClick = () => {
 }
 
 
-const disablerightArrow = () => {
-
+const disablerightArrow = (rightArrow) => {
+    rightArrow.classList = 'disabled arrow-right';
+    rightArrow.classList.remove('waves-effect')
 }
 
 
-const enablerightArrow = () => {
-
+const enablerightArrow = (rightArrow) => {
+    rightArrow.classList.remove('disabled');
+    rightArrow.classList = 'waves-effect arrow-right';
 }
 
 
@@ -137,12 +149,13 @@ init();
 
 let pageLink = document.querySelectorAll('a');
 let activePageNumber;
-let clickedLink;
+
 let nextPage;
 let leftArrow;
 let rightArrow;
 let url = '';
-let activeLink;
+
+
 
 
 pageLink.forEach((link) => {
@@ -152,15 +165,21 @@ pageLink.forEach((link) => {
         activeLink = document.querySelector('.active');
 
         //get active page number....
+        console.log(activeLink);
 
         activePageNumber = parseInt(activeLink.innerText);
 
+
         if ((this.innerText === 'chevron_left' && activePageNumber === 1) || (this.innerText === 'chevron_right' && activePageNumber === 10)) return;
+
+
+
+
 
         //update active class....
 
+        activeLink.classList.remove('disabled')
         activeLink.classList = 'waves-effect';
-        activeLink.classList.remove('active');
 
         if (this.innerText === 'chevron_left') {
             handleleftArrowClick();
