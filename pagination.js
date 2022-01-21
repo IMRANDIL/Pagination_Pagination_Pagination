@@ -9,7 +9,10 @@ const getData = async (url) => {
     try {
         const data = await fetch(url);
         const response = await data.json();
-
+        if (response) {
+            const loading = document.querySelector('#loading');
+            loading.textContent = '';
+        }
 
         loadDataIntoTable(response);
     } catch (error) {
@@ -36,6 +39,23 @@ const loadDataIntoTable = (data) => {
         percentChange.push(percent_change_24h);
     });
 
+    const Addfield = colName.map((_, index) => {
+
+        return (
+            `<tr>
+           <td>${colName[index]}</td>
+           <td>${rankCol[index]}</td>
+           <td>${priceCol[index]}</td>
+           <td>${percentChange[index]}</td>
+           </tr>
+           `
+        )
+    }).join('');
+
+
+
+    const tableBody = document.querySelector('#crypto_table_data');
+    tableBody.innerHTML = Addfield;
 
 }
 
