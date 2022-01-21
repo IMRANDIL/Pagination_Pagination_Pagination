@@ -48,7 +48,7 @@ const loadDataIntoTable = (data) => {
            <td style='font-size:20px;'>${colName[index]} (${colSymbol[index]})</td>
            <td style='font-size:20px;'>${rankCol[index]}</td>
            <td style='font-size:25px;'>$${priceCol[index]}</td>
-           <td class=${percentChange[index] > 0 ? 'green-text text-darken-4' : 'red-text text-darken-4'} style='font-size:25px;'>${percentChange[index]}</td>
+           <td class=${percentChange[index] >= 0 ? 'green-text text-darken-4' : 'red-text text-darken-4'} style='font-size:25px;'>${percentChange[index]}</td>
            </tr>
            `
         )
