@@ -45,9 +45,9 @@ const loadDataIntoTable = (data) => {
 
         return (
             `<tr>
-           <td style='font-size:20px;'>${colName[index]} (${colSymbol[index]})</td>
-           <td style='font-size:20px;'>${rankCol[index]}</td>
-           <td style='font-size:25px;'>$${priceCol[index]}</td>
+           <td style='font-size:15px;'>${colName[index]} (${colSymbol[index]})</td>
+           <td style='font-size:15px;'>${rankCol[index]}</td>
+           <td style='font-size:20px;'>$${priceCol[index]}</td>
            <td class=${percentChange[index] >= 0 ? 'green-text text-darken-4' : 'red-text text-darken-4'} style='font-size:25px;'>${percentChange[index]}</td>
            </tr>
            `
@@ -100,7 +100,21 @@ function handleNumberClick(clickedLink, leftArrow, rightArrow) {
 
 
 
-const handleleftArrowClick = () => {
+const handleleftArrowClick = (activePageNumber, leftArrow, rightArrow) => {
+    //move to previous page...
+    let previouspage = document.querySelectorAll('li')[activePageNumber - 1];
+    previouspage.classList = 'active';
+    url = getUrl(((activePageNumber - 1) * 10) - 10);
+    getData(url);
+
+    if (activePageNumber - 1 === 1) {
+        disableleftArrow(leftArrow)
+    }
+
+    if (activePageNumber === 10) {
+        enablerightArrow(rightArrow)
+    }
+
 
 }
 
@@ -117,7 +131,20 @@ const enableleftArrow = (leftArrow) => {
 
 
 
-const handlerightArrowClick = () => {
+const handlerightArrowClick = (activePageNumber, leftArrow, rightArrow) => {
+    //move to next page
+    let nextpage = document.querySelectorAll('li')[activePageNumber + 1];
+    nextpage.classList = 'active';
+    url = getUrl(((activePageNumber + 1) * 10) - 10);
+    getData(url);
+
+    if (activePageNumber + 1 === 10) {
+        disablerightArrow(rightArrow)
+    }
+
+    if (activePageNumber === 1) {
+        enableleftArrow(leftArrow)
+    }
 
 }
 
@@ -150,7 +177,6 @@ init();
 let pageLink = document.querySelectorAll('a');
 let activePageNumber;
 
-let nextPage;
 let leftArrow;
 let rightArrow;
 let url = '';
@@ -165,7 +191,7 @@ pageLink.forEach((link) => {
         activeLink = document.querySelector('.active');
 
         //get active page number....
-        console.log(activeLink);
+
 
         activePageNumber = parseInt(activeLink.innerText);
 
@@ -182,9 +208,9 @@ pageLink.forEach((link) => {
         activeLink.classList = 'waves-effect';
 
         if (this.innerText === 'chevron_left') {
-            handleleftArrowClick();
+            handleleftArrowClick(activePageNumber, leftArrow, rightArrow);
         } else if (this.innerText === 'chevron_right') {
-            handlerightArrowClick();
+            handlerightArrowClick(activePageNumber, leftArrow, rightArrow);
         } else {
             handleNumberClick(this, leftArrow, rightArrow);
         }
